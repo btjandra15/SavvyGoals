@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 
 import { useEffect } from "react";
@@ -20,6 +19,7 @@ export default function Home() {
       {!isSignedIn && (
         <>
           <h1 className="text-2xl font-bold">Welcome to SaveSmart</h1>
+
           <SignInButton>
             <button className="bg-blue-500 text-white rounded-full px-6 py-3 cursor-pointer">
               Sign In
