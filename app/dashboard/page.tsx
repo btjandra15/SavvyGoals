@@ -5,20 +5,75 @@ import RecentActivity from '@/components/RecentActivity';
 import StatsOverview from '@/components/StatsOverview';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import createClerkSupabaseClient from '@/lib/supabaseClient';
 import { useUser } from '@clerk/nextjs';
-import { PiggyBank, Plus } from 'lucide-react';
+import { PiggyBank, Plus, Trophy } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const Dashboard = () => {
+    const [goals, setGoals] = useState([]);
+    const [transactions, setTransactions] = useState([]);
     const [isloading, setIsLoading] = useState(false);
-    const activeGoals = [];
+    const {user} = useUser();
+    const client = createClerkSupabaseClient();
+    const activeGoals = goals.filter(goal => !goal.is_completed);
+    const completedGoals = goals.filter(goal => goal.is_completed).length;
+
+    const loadGoals = async() => {
+        setIsLoading(true)
+    
+        try {
+          const { data, error } = await client
+            .from('goals')
+            .select('*')
+            .eq('clerk_user_id', user.id)
+            .order('created_at', { ascending: false })
+    
+          if(error) throw error;
+          
+          setGoals(data);
+        } catch (error) {
+          console.error("Error loading goals: ", error)
+        }
+          
+        setIsLoading(false);
+    }
+
+    const loadTransactions = async() => {
+        setIsLoading(true)
+    
+        try {
+          const { data, error } = await client
+            .from('transactions')
+            .select('*')
+            .eq('clerk_user_id', user.id)
+            .order('created_at', { ascending: false })
+    
+          if(error) throw error;
+
+          console.log(data);
+          setTransactions(data);
+        } catch (error) {
+          console.error("Error loading goals: ", error)
+        }
+          
+        setIsLoading(false);
+    }
+    
+    useEffect(() => {
+        if(!user) redirect('/');
+    
+        loadGoals();
+        loadTransactions();
+    }, [user]);
         
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-4 md:p-8">
             <div className="max-w-7xl mx-auto space-y-8">
+                {/* HEADER */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
                         <h1 className="text-3xl md:text-4xl font-bold text-slate-900">Dashboard</h1>
@@ -76,14 +131,34 @@ const Dashboard = () => {
                     ) : (
                         <div className="space-y-4">
                             {activeGoals.map((goal, idx) => (
-                                <GoalCard key={idx}/> 
+                                <GoalCard key={goal.id} goal={goal} onUpdate={loadGoals}/> 
                             ))}
                         </div>
                     )}
                 </div>
 
                 {/* Sidebar */}
-                <RecentActivity/>
+                <div className="space-y-6">
+                    <RecentActivity transactions={transactions} goals={goals} isLoading={isloading}/>
+
+                    {completedGoals > 0 && (
+                        <Card className='border-0 shadow-lg bg-gradient-to-r from-green-50 to-emerald-50'>
+                            <CardHeader className='pb-3'>
+                                <CardTitle className='flex items-center gap-2 text-green-800'>
+                                    <Trophy className='w-5 h-5'/>
+                                    Completed Goals
+                                </CardTitle>
+                            </CardHeader>
+
+                            <CardContent>
+                                <div className="text-center">
+                                    <div className="text-3xl font-bold text-green-700 mb-2">{completedGoals}</div>
+                                    <p className='text-green-600 text-sm'>{completedGoals === 1 ? 'Goal achieved!' : 'Goals achieved'}</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
+                </div>
             </div>
         </div>
     )
