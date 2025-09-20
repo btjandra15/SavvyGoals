@@ -119,7 +119,7 @@ const GoalCard = ({goal, onUpdate}) => {
         <div className="flex items-center gap-2">
           <Badge className={`${categoryColors[goal.category]} border font-medium`}>{goal.category}</Badge>
 
-          <Link href="/dashboard/edit/">
+          <Link href={`/dashboard/edit/${goal.id}`}>
             <Button variant="ghost" size="icon" className='hover:bg-blue-50'>
               <Edit className='w-4 h-4'/>
             </Button>
@@ -147,7 +147,6 @@ const GoalCard = ({goal, onUpdate}) => {
             )}
           </div>
         </div>
-
 
         {/* GOAL STATUS & TIMELINE */}
         <div className="flex items-center justify-between pt-2">
