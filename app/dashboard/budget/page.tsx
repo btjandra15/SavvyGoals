@@ -1,9 +1,11 @@
 "use client"
 
-import BudgetOverview from '@/components/budget/budgetoverview';
+import BudgetOverview from '@/components/budget/BudgetOverview';
+import CategoryProgress from '@/components/budget/CategoryProgress';
+import RecentExpenses from '@/components/budget/RecentExpenses';
 import createClerkSupabaseClient from '@/lib/supabaseClient';
 import { useUser } from '@clerk/nextjs';
-import { endOfMonth, format, isWithinInterval, startOfMonth } from 'date-fns';
+import { endOfMonth, format, isWithinInterval, parseISO, startOfDay, startOfMonth } from 'date-fns';
 import React, { useEffect, useState } from 'react'
 
 const Budget = () => {
@@ -47,7 +49,8 @@ const Budget = () => {
         return;
       }
       
-      // console.log("Expenses Data: ", expenseData);
+      // console.log("Expenses:", expenseData);
+      // console.log("Types:", expenseData.map(e => [e.amount, typeof e.amount, e.date]));
       setBudgetCategory(budgetCategoryData);
       setExpenses(expenseData);
     } catch (error) {
@@ -59,12 +62,21 @@ const Budget = () => {
     const now = new Date();
     const monthStart = startOfMonth(now);
     const monthEnd = endOfMonth(now);
+    
+    return expenses.filter(expense => {
+      const expenseDate = startOfDay(parseISO(expense.date));
+      return isWithinInterval(expenseDate, {start: monthStart, end: monthEnd});
+    });
+  };
 
-    return expenses.filter(expense => isWithinInterval(new Date(expense.date), {start: monthStart, end: monthEnd}))
+  const calculateCategoryProgress = (categoryName) => {
+    const monthExpenses = getCurrentMonthExpenses();
+
+    return monthExpenses.filter(expense => expense.category === categoryName).reduce((sum, expense) => sum + expense.amount, 0);
   }
 
-  const totalBudget = budgetCategory.reduce((sum, category) => sum + category.budget_amount, 0);
-  const totalSpent = getCurrentMonthExpenses().reduce((sum, exp) => sum + exp.amount, 0);
+  const totalBudget = budgetCategory.reduce((sum, category) => sum + category.budgeted_amount, 0);
+  const totalSpent = getCurrentMonthExpenses().reduce((sum, exp) => sum + Number(exp.amount || 0), 0);
   const remainingBudget = totalBudget - totalSpent;
 
   useEffect(() => {
@@ -97,6 +109,11 @@ const Budget = () => {
         remainingBudget={remainingBudget} 
         monthlyIncome={userData?.monthly_income || 0}
       />
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-5">
+        <CategoryProgress budgetCategory={budgetCategory} calculateCategorySpending={calculateCategoryProgress}/>
+        <RecentExpenses expenses={getCurrentMonthExpenses().slice(0, 6)}/>
+      </div>
     </div>
   )
 }
