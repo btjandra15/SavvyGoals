@@ -1,7 +1,7 @@
 import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Clock, TrendingDown, TrendingUp } from 'lucide-react';
-import { Badge } from './ui/badge';
+import { Badge } from '../ui/badge';
 import { format } from 'date-fns';
 
 const RecentActivity = ({transactions, goals, isLoading}) => {

@@ -24,19 +24,20 @@ export const metadata: Metadata = {
 export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
   const navigationItems = [
     {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: BarChart3,
+      label: "Goals",
+      items: [
+        { title: "Dashboard", url: "/dashboard/savings", icon: BarChart3 },
+        { title: "My Goals", url: "/dashboard/savings/my_goals", icon: Target },
+        { title: "Add Goal", url: "/dashboard/savings/add_goal", icon: Plus },
+      ],
     },
     {
-      title: "My Goals",
-      url: "/dashboard/my_goals",
-      icon: Target,
-    },
-    {
-      title: "Add Goal",
-      url: "/dashboard/add_goal",
-      icon: Plus,
+      label: "Budgeting",
+      items: [
+        { title: "Overview", url: "/dashboard/budget", icon: PiggyBank },
+        { title: "Expenses", url: "/dashboard/budget/expenses", icon: BarChart3 },
+        { title: "Reports", url: "/dashboard/budget/reports", icon: BarChart3 },
+      ],
     },
   ];
 
@@ -53,36 +54,40 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
                       <PiggyBank className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h2 className="font-bold text-slate-900 text-lg">SaveSmart</h2>
+                      <h2 className="font-bold text-slate-900 text-lg">
+                        <Link href="/dashboard">SavvyGoals</Link>
+                      </h2>
+
                       <p className="text-xs text-slate-500">Track your savings goals</p>
                     </div>
                   </div>
                 </SidebarHeader>
                 
                 <SidebarContent className="p-3">
-                  <SidebarGroup>
-                    <SidebarGroupLabel className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 py-3">
-                      Navigation
-                    </SidebarGroupLabel>
-                    <SidebarGroupContent>
-                      <SidebarMenu className="space-y-1">
-                        {navigationItems.map((item) => (
-                          <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton 
-                              asChild 
-                              className={`group hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 rounded-xl px-4 py-3`}
-                            >
-                              <Link href={item.url} className="flex items-center gap-3">
-                                <item.icon className="w-5 h-5" />
-                                <span className="font-medium">{item.title}</span>
-                              </Link>
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </SidebarMenu>
-                    </SidebarGroupContent>
-                  </SidebarGroup>
+                  {navigationItems.map((module) => (
+                    <SidebarGroup key={module.label}>
+                      <SidebarGroupLabel className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 py-3">
+                        {module.label}
+                      </SidebarGroupLabel>
+                      
+                      <SidebarGroupContent>
+                        <SidebarMenu className="space-y-1">
+                          {module.items.map((item) => (
+                            <SidebarMenuItem key={item.title}>
+                              <SidebarMenuButton asChild className="group hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 rounded-xl px-4 py-3">
+                                <Link href={item.url} className="flex items-center gap-3">
+                                  <item.icon className="w-5 h-5" />
+                                  <span className="font-medium">{item.title}</span>
+                                </Link>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          ))}
+                        </SidebarMenu>
+                      </SidebarGroupContent>
+                    </SidebarGroup>
+                  ))}
                 </SidebarContent>
+
 
                 <SidebarFooter className="border-t border-slate-200/60 p-4">
                   <div className="flex items-center gap-3">

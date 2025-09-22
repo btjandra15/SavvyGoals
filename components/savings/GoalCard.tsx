@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
 import Link from 'next/link';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { Calendar, CheckCircle, Edit, Minus, Plus } from 'lucide-react';
-import { Progress } from './ui/progress';
+import { Progress } from '../ui/progress';
 import { differenceInDays, format, isPast } from 'date-fns';
-import { Input } from './ui/input';
+import { Input } from '../ui/input';
 import createClerkSupabaseClient from '@/lib/supabaseClient';
 import { useSession } from '@clerk/nextjs';
 

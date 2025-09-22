@@ -1,6 +1,6 @@
 "use client"
 
-import GoalCard from '@/components/GoalCard';
+import GoalCard from '@/components/savings/GoalCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
