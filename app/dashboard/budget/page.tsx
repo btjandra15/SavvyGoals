@@ -20,7 +20,7 @@ const Budget = () => {
     const {data, error} = await client
       .from('users')
       .select("*")
-      .eq('clerk_user_id', user.id);
+      .eq('clerk_user_id', user?.id);
 
     if (data && data.length > 0) {
       setUserData(data[0]); 
@@ -34,12 +34,12 @@ const Budget = () => {
       const {data: budgetCategoryData, error: budgetCategoryError} = await client
         .from('budget_categories')
         .select('*')
-        .eq('clerk_user_id', user.id)
+        .eq('clerk_user_id', user?.id)
 
       const {data: expenseData, error: expenseError} = await client
         .from('expenses')
         .select('*')
-        .eq('clerk_user_id', user.id)
+        .eq('clerk_user_id', user?.id)
 
       if(budgetCategoryError) {
         console.log("Error pulling budget category data: ", budgetCategoryError);

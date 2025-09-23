@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { BarChart3, PiggyBank, Plus, Target } from "lucide-react";
+import { BarChart3, PiggyBank, Plus, Target, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
 const geistSans = Geist({
@@ -35,8 +35,9 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
       label: "Budgeting",
       items: [
         { title: "Overview", url: "/dashboard/budget", icon: PiggyBank },
+        { title: "Budget Setup", url: "/dashboard/budget/budget_setup", icon: TrendingUp },
         { title: "Expenses", url: "/dashboard/budget/expenses", icon: BarChart3 },
-        { title: "Reports", url: "/dashboard/budget/reports", icon: BarChart3 },
+        { title: "Reports", url: "/dashboard/budget/budget_setup", icon: Target },
       ],
     },
   ];
@@ -70,8 +71,8 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
                         {module.label}
                       </SidebarGroupLabel>
                       
-                      <SidebarGroupContent>
-                        <SidebarMenu className="space-y-1">
+                      <SidebarGroupContent className="overflow-y-auto">
+                        <SidebarMenu className="space-y-1 overflow-y-auto">
                           {module.items.map((item) => (
                             <SidebarMenuItem key={item.title}>
                               <SidebarMenuButton asChild className="group hover:bg-blue-50 hover:text-blue-700 transition-all duration-300 rounded-xl px-4 py-3">
