@@ -5,6 +5,8 @@ import { Button } from '../ui/button';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { useUser } from '@clerk/nextjs';
+import createClerkSupabaseClient from '@/lib/supabaseClient';
 
 const categoryTypes = [
   { value: "housing", label: "Housing", icon: "🏠" },
@@ -29,6 +31,8 @@ const CategoryManager = ({categoryData, onUpdate}) => {
     const [showAddForm, setShowAddForm] = useState(false);
     const [editingId, setEditingID] = useState(null);
     const [editingData, setEditingData] = useState({});
+    const {user} = useUser();
+    const supabase = createClerkSupabaseClient();
 
     const [newCategory, setNewCategory] = useState({
         name: '',
@@ -39,8 +43,37 @@ const CategoryManager = ({categoryData, onUpdate}) => {
 
     const totalBudget = categoryData.reduce((sum, cat) => sum + cat.budgeted_amount, 0);
 
-    const handleAddCategory = () => {
+    const handleAddCategory = async() => {
+        if (!newCategory.name || !newCategory.budgeted_amount || !newCategory.category_type) return;
 
+        try {
+            const {data, error} = await supabase
+                .from('budget_categories')
+                .insert([
+                    {
+                        clerk_user_id: user?.id,
+                        name: newCategory.name,
+                        budgeted_amount: parseFloat(newCategory.budgeted_amount) || 0,
+                        category_type: newCategory.category_type,
+                        color: newCategory.color
+                    }
+                ]).select().single()
+
+            if(error) throw error;
+
+            onUpdate([...categoryData, data]);
+
+            setNewCategory({
+                name: "",
+                budgeted_amount: "",
+                category_type: "",
+                color: categoryColors[0],
+            })
+
+            setShowAddForm(false)
+        } catch (error) {
+            console.error("Error adding category:", error.message);
+        } 
     }
 
     const handleDeleteCategory = async(id) => {
