@@ -108,7 +108,11 @@ const GoalCard = ({goal, onUpdate}) => {
           <span className='text-2xl'>{categoryIcons[goal.category]}</span>
 
           <div className="">
-            <CardTitle className='text-xl font-bold text-slate-900 group-hover:text-blue-800 transition-colors'>{goal.title}</CardTitle>
+            <CardTitle className='text-xl font-bold text-slate-900 group-hover:text-blue-800 transition-colors'>
+              <Link href={`/dashboard/savings/${goal.id}`}>
+                {goal.title}
+              </Link>
+            </CardTitle>
 
             {goal.description && (
               <p className='text-sm text-slate-600 mt-1'>{goal.description}</p>
@@ -119,7 +123,7 @@ const GoalCard = ({goal, onUpdate}) => {
         <div className="flex items-center gap-2">
           <Badge className={`${categoryColors[goal.category]} border font-medium`}>{goal.category}</Badge>
 
-          <Link href={`/dashboard/edit/${goal.id}`}>
+          <Link href={`/dashboard/savings/edit/${goal.id}`}>
             <Button variant="ghost" size="icon" className='hover:bg-blue-50'>
               <Edit className='w-4 h-4'/>
             </Button>

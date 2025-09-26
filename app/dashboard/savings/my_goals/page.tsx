@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import createClerkSupabaseClient from '@/lib/supabaseClient';
+import { useUser } from '@clerk/nextjs';
 import { Calendar, CheckCircle, DollarSign, Plus, Search, Target } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
