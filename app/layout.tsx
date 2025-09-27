@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider, UserButton } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, UserButton } from "@clerk/nextjs";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { BarChart3, PiggyBank, Plus, Target, TrendingUp } from "lucide-react";
 import Link from "next/link";
@@ -48,6 +48,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <SidebarProvider>
             <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-50 to-blue-50">
+              <SignedIn>
               <Sidebar className="border-r border-slate-200/60">
                 <SidebarHeader className="border-b border-slate-200/60 p-6">
                   <div className="flex items-center gap-3">
@@ -96,6 +97,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
                   </div>
                 </SidebarFooter>
               </Sidebar>
+              </SignedIn>
 
               <main className="flex-1 flex flex-col">
                 <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200/60 px-6 py-4 md:hidden">

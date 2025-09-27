@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
+import Navbar from "@/components/landing/Navbar";
 
 export default function Home() {
   const { isSignedIn } = useUser();
@@ -15,24 +16,8 @@ export default function Home() {
   }, [isSignedIn, router]);
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-4">
-      {!isSignedIn && (
-        <>
-          <h1 className="text-2xl font-bold">Welcome to SaveSmart</h1>
-
-          <SignInButton>
-            <button className="bg-blue-500 text-white rounded-full px-6 py-3 cursor-pointer">
-              Sign In
-            </button>
-          </SignInButton>
-
-          <SignUpButton>
-            <button className="bg-purple-600 text-white rounded-full px-6 py-3 ">
-              Sign Up
-            </button>
-          </SignUpButton>
-        </>
-      )}
+    <main className="min-h-screen bg-white">
+      <Navbar/>
     </main>
   );
 }
