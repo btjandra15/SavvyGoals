@@ -1,4 +1,4 @@
-import { PiggyBank } from 'lucide-react';
+import { Menu, PiggyBank, X } from 'lucide-react';
 import React, { useState } from 'react'
 import { Button } from '../ui/button';
 import Link from 'next/link';
@@ -29,6 +29,7 @@ const Navbar = () => {
                         </div>
                     </div>
 
+                    {/* DESKTOP NAVIGATION */}
                     <div className="hidden md:flex items-center space-x-8">
                         <button onClick={() => scrollToSection('features')} className='text-slate-600 hover:text-blue-600 font-medium transition-colors cursor-pointer'>Features</button>
                         <button onClick={() => scrollToSection('pricing')} className='text-slate-600 hover:text-blue-600 font-medium transition-colors cursor-pointer'>Pricing</button>
@@ -38,7 +39,24 @@ const Navbar = () => {
                             <button onClick={() => scrollToSection('features')} className='text-slate-600 hover:text-blue-600 font-medium transition-colors cursor-pointer'>Get Started</button>
                         </Link>
                     </div>
+
+                    {/* MOBILE MENU BUTTON */}
+                    <div className="md:hidden">
+                        <Button variant={'ghost'} size={'icon'} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                            {isMenuOpen ? <X className='w-5 h-5'/> : <Menu className='w-5 h-5'/>}
+                        </Button>
+                    </div>
                 </div>
+
+                {/* Mobile Navigation */}
+                {isMenuOpen && (
+                    <div className="md:hidden border-t border-slate-200 py-4 spae-y-4">
+                        <button onClick={() => scrollToSection('features')} className='block w-full text-left text-slate-600 hover:text-blue-600 font-medium py-2'>Features</button>
+                        <button onClick={() => scrollToSection('pricing')} className='block w-full text-left text-slate-600 hover:text-blue-600 font-medium py-2'>Pricing</button>
+                        <button onClick={() => scrollToSection('testimonials')} className='block w-full text-left text-slate-600 hover:text-blue-600 font-medium py-2'>Testimonials</button>
+                        <button onClick={() => scrollToSection('Dashboard')} className='block w-full text-left text-slate-600 hover:text-blue-600 font-medium py-2'>Get Started</button>
+                    </div>
+                )}
             </div>
         </nav>
     )

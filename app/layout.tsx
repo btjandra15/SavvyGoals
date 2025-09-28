@@ -37,7 +37,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
         { title: "Overview", url: "/dashboard/budget", icon: PiggyBank },
         { title: "Budget Setup", url: "/dashboard/budget/budget_setup", icon: TrendingUp },
         { title: "Expenses", url: "/dashboard/budget/expenses", icon: BarChart3 },
-        { title: "Reports", url: "/dashboard/budget/budget_setup", icon: Target },
+        { title: "Reports", url: "/dashboard/budget/reports", icon: Target },
       ],
     },
   ];
