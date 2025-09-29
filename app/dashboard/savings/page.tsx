@@ -29,7 +29,7 @@ const Dashboard = () => {
           const { data, error } = await client
             .from('goals')
             .select('*')
-            .eq('clerk_user_id', user.id)
+            .eq('clerk_user_id', user?.id)
             .order('created_at', { ascending: false })
     
           if(error) throw error;
@@ -47,9 +47,9 @@ const Dashboard = () => {
     
         try {
           const { data, error } = await client
-            .from('transactions')
+            .from('savings_transactions')
             .select('*')
-            .eq('clerk_user_id', user.id)
+            .eq('clerk_user_id', user?.id)
             .order('created_at', { ascending: false })
     
           if(error) throw error;
@@ -120,7 +120,7 @@ const Dashboard = () => {
                                 <h3 className="text-lg font-semibold text-slate-900 mb-2">No Active Goals</h3>
                                 <p className="text-slate-600 mb-6">Start your savings journey by creating your first goal!</p>
 
-                                <Link href="/dashboard/add_goal">
+                                <Link href="/dashboard/savings/add_goal">
                                     <Button className="bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600">
                                     <Plus className="w-4 h-4 mr-2" />
                                     Create Your First Goal
