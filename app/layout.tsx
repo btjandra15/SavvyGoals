@@ -36,8 +36,6 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
       items: [
         { title: "Overview", url: "/dashboard/budget", icon: PiggyBank },
         { title: "Budget Setup", url: "/dashboard/budget/budget_setup", icon: TrendingUp },
-        { title: "Expenses", url: "/dashboard/budget/expenses", icon: BarChart3 },
-        { title: "Reports", url: "/dashboard/budget/reports", icon: Target },
       ],
     },
   ];
@@ -47,6 +45,18 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <SidebarProvider>
+            <style>{`
+              :root {
+                --primary-navy: #1a365d;
+                --primary-emerald: #10b981;
+                --primary-coral: #f56565;
+                --bg-luxury: #fafbfc;
+                --text-primary: #2d3748;
+                --text-secondary: #718096;
+                --shadow-premium: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+              }
+            `}</style>
+            
             <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-50 to-blue-50">
               <SignedIn>
               <Sidebar className="border-r border-slate-200/60">
