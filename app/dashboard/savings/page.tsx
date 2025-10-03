@@ -19,8 +19,10 @@ const Dashboard = () => {
     const [isloading, setIsLoading] = useState(false);
     const {user} = useUser();
     const client = createClerkSupabaseClient();
-    const activeGoals = goals.filter(goal => !goal.is_completed);
-    const completedGoals = goals.filter(goal => goal.is_completed).length;
+    const activeGoals = goals?.filter(goal => !goal?.is_completed);
+    const completedGoals = goals?.filter(goal => goal?.is_completed).length;
+    const totalSaved = goals?.reduce((sum, goal) => sum + (goal?.current_amount || 0), 0);
+    const totalTarget = goals?.reduce((sum, goal) => + (goal?.target_amount || 0), 0);
 
     const loadGoals = async() => {
         setIsLoading(true)
@@ -49,7 +51,7 @@ const Dashboard = () => {
           const { data, error } = await client
             .from('transactions')
             .select('*')
-            .eq('clerk_user_id', user.id)
+            .eq('clerk_user_id', user?.id)
             .order('created_at', { ascending: false })
     
           if(error) throw error;
@@ -89,7 +91,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <StatsOverview/>
+            <StatsOverview totalSaved={totalSaved} totalTarget={totalTarget} completedGoals={completedGoals} activeGoals={activeGoals.length} isLoading={isloading}/>
 
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-3 gap-8 mt-5">
@@ -99,7 +101,7 @@ const Dashboard = () => {
                         <h2 className="text-2xl font-bold text-slate-900">Active Goals</h2>
 
                         <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                            5 Active
+                            {activeGoals.length} Active
                         </Badge>
                     </div>
 
