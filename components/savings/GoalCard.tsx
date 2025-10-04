@@ -52,7 +52,7 @@ const GoalCard = ({goal, onUpdate}) => {
       const transactionAmount = type === 'deposit' ? amount : -amount;
 
       const {data: transactionData, error: transactionError} = await supabase
-        .from('transactions')
+        .from('savings_transactions')
         .insert(
           {
             goal_id: goal.id,
